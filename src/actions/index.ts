@@ -2,16 +2,19 @@
 
 import {db} from '@/db'
 import {redirect} from "next/navigation";
+import {revalidatePath} from "next/cache";
 
 export  async function editSnippet(id:number,code:string){
     await db.snippet.update({
         where:{id:id},
         data: {code:code}
     });
+    revalidatePath(`/snippet/${id}`)
     redirect(`/snippet/${id}`);
 }
 export async function deleteSnippet(id:number){
     await db.snippet.delete({where:{id:id}});
+    revalidatePath('/');
     redirect('/');
 }
 
@@ -48,5 +51,6 @@ export async  function createSnippet(formState:{message:string}, formData:FormDa
                 };
             }
     }
+    revalidatePath('/');
     redirect('/');
 }

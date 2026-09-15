@@ -22,3 +22,11 @@ export default async function SnippetEditPage(props: SnippetEditPageProps){
         <SnippetEditForm Snippet={snippet}/>
     );
 }
+export async function generateStaticParams(){
+    const snippet=await db.snippet.findMany();
+    return snippet.map((snippet)=>{
+        return {
+            id:snippet.id.toString(),
+        };
+    });
+}
